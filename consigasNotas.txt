@@ -1,0 +1,27 @@
+Calculador de precios de obra social.
+
+Indices de evaluacion:
+
+Edad: entre 0 y 60 años
+
+Bloques: edad
+0  a 12  20000
+13 a 25  25000  
+26 a 35  30000
+36 a 60  40000
+
+Coberturas:
+Ninguna: 1
+Simple: 1.05
+Completa: 1.1
+ 
+Guardias: Ninguna, Simple, Completa.
+Dentales: Ninguna, Simple, Completa.
+Medicamentos: Ninguna, Simple, Completa.
+Salud Mental: Ninguna, Simple, Completa.
+Cirujias Plasticas: Ninguna, Simple, Completa.
+Consultorios:Ninguna, Simple, Completa.
+Analisis: Ninguna, Simple, Completa.
+Rayos: Ninguna, Simple, Completa.
+
+
