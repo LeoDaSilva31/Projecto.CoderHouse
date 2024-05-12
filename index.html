@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora de Cobertura</title>
   <link rel="stylesheet" href="styles.css">
+  <!-- Incluir la biblioteca SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
   <div class="container">
@@ -20,19 +22,20 @@
       </div>
       <button type="button" class="btn">Calcular</button>
     </form>
+    <!--
     <div id="resultado-container">
       <h2>El valor de la cobertura seleccionada es:</h2>
       <p id="resultado-final"></p>
     </div>
+    -->
   </div>
-
   <div id="modal" class="modal">
     <div class="modal-contenido">
       <span class="cerrar">&times;</span>
       <p>Debes ingresar una edad válida entre 0 y 60.</p>
     </div>
   </div>
-
+  
   <script src="script.js"></script>
 </body>
 </html>
