@@ -139,7 +139,7 @@ function mostrarFormularioContacto(detalleCoberturas) {
     mensaje += `${cobertura}: ${opcionSeleccionada}\n`;
   }
 
-  const html = `
+  const formularioHTML = `
     <form>
       <div class="form-group">
         <label for="nombre">Nombre:</label>
@@ -158,7 +158,7 @@ function mostrarFormularioContacto(detalleCoberturas) {
 
   Swal.fire({
     title: 'Formulario de Contacto',
-    html: html,
+    html: formularioHTML,
     confirmButtonText: 'Enviar',
     showCancelButton: true,
     cancelButtonText: 'Cancelar',
@@ -168,19 +168,28 @@ function mostrarFormularioContacto(detalleCoberturas) {
       const mensaje = document.getElementById('mensaje').value;
       if (!nombre || !email || !mensaje) {
         Swal.showValidationMessage('Por favor, completa todos los campos');
+      } else {
+        // Enviar el correo electrónico mediante EmailJS
+        emailjs.send('ID_DE_SERVICIO', 'ID_DE_PLANTILLA', {
+          from_name: nombre,
+          reply_to: email,
+          message: mensaje
+        })
+        .then(() => {
+          Swal.fire({
+            title: '¡Gracias por contactarnos!',
+            text: 'Tu mensaje ha sido enviado correctamente.',
+            icon: 'success'
+          });
+        }, (error) => {
+          Swal.fire({
+            title: 'Error',
+            text: 'Ocurrió un error al enviar el mensaje. Por favor, inténtalo de nuevo más tarde.',
+            icon: 'error'
+          });
+          console.error('Error al enviar el correo electrónico:', error);
+        });
       }
-      // Aquí puedes agregar la lógica para enviar el formulario
-      return { nombre, email, mensaje };
-    }
-  }).then((result) => {
-    if (result.isConfirmed) {
-      Swal.fire({
-        title: '¡Gracias por contactarnos!',
-        text: `Nombre: ${result.value.nombre}
-               Email: ${result.value.email}
-               Mensaje: ${result.value.mensaje}`,
-        icon: 'success'
-      });
     }
   });
 }
