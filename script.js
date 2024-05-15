@@ -79,8 +79,14 @@ window.onclick = function(event) {
 function calcularValorTotal() {
   const edadInput = document.getElementById('edad-input');
   let edad = parseInt(edadInput.value);
+
   if (isNaN(edad) || edad < 0 || edad > 60) {
-    mostrarModal(); // Mostrar el modal si la edad no es válida
+    Swal.fire({
+      title: 'Edad inválida',
+      text: 'Debes ingresar una edad válida entre 0 y 60.',
+      icon: 'error',
+      confirmButtonText: 'Aceptar'
+    });
     return;
   }
 
@@ -103,13 +109,82 @@ function calcularValorTotal() {
   const incrementoTotal = calcularIncrementoTotal(precioInicial);
   const valorTotal = precioInicial + incrementoTotal;
 
+  let detalleCoberturas = "";
+  for (const cobertura of coberturas) {
+    const opcionSeleccionada = document.querySelector(`select[data-cobertura="${cobertura}"]`).value;
+    detalleCoberturas += `<div>${cobertura}: ${opcionSeleccionada}</div>`;
+  }
+
   Swal.fire({
-    title: 'Cobertura seleccionada',
-    text: `El valor de la cobertura seleccionada es: $${valorTotal}`,
-    icon: 'success',
-    confirmButtonText: 'Aceptar'
+    title: `<div style="text-align: center; font-size: 24px; animation: heartBeat 1s infinite;">El valor de la cobertura seleccionada es: $${valorTotal}</div>`,
+    html: `<div style="text-align: justify;">Detalle de coberturas:</div>${detalleCoberturas}`,
+    icon: 'fas fa-heartbeat',
+    confirmButtonText: 'Aceptar',
+    showCancelButton: true,
+    cancelButtonText: 'Contáctame',
+    cancelButtonColor: '#3085d6'
+  }).then((result) => {
+    if (result.dismiss === Swal.DismissReason.cancel) {
+      mostrarFormularioContacto(detalleCoberturas);
+    }
   });
 }
+
+function mostrarFormularioContacto(detalleCoberturas) {
+  const coberturasPorDefecto = ['Guardias', 'Dentales', 'Medicamentos', 'Salud Mental', 'Cirugías Plásticas', 'Consultorios', 'Análisis', 'Rayos'];
+  let mensaje = 'Me interesa que se comuniquen conmigo a la brevedad, estoy interesado en el servicio de coberturas médicas +Salud, en particular quiero información por el siguiente listado de coberturas:\n\n';
+
+  for (const cobertura of coberturasPorDefecto) {
+    const opcionSeleccionada = document.querySelector(`select[data-cobertura="${cobertura}"]`).value;
+    mensaje += `${cobertura}: ${opcionSeleccionada}\n`;
+  }
+
+  const html = `
+    <form>
+      <div class="form-group">
+        <label for="nombre">Nombre:</label>
+        <input type="text" class="form-control" id="nombre" placeholder="Ingresa tu nombre">
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" class="form-control" id="email" placeholder="Ingresa tu email">
+      </div>
+      <div class="form-group">
+        <label for="mensaje">Mensaje:</label>
+        <textarea class="form-control" id="mensaje" rows="12" placeholder="Ingresa tu mensaje">${mensaje}</textarea>
+      </div>
+    </form>
+  `;
+
+  Swal.fire({
+    title: 'Formulario de Contacto',
+    html: html,
+    confirmButtonText: 'Enviar',
+    showCancelButton: true,
+    cancelButtonText: 'Cancelar',
+    preConfirm: () => {
+      const nombre = document.getElementById('nombre').value;
+      const email = document.getElementById('email').value;
+      const mensaje = document.getElementById('mensaje').value;
+      if (!nombre || !email || !mensaje) {
+        Swal.showValidationMessage('Por favor, completa todos los campos');
+      }
+      // Aquí puedes agregar la lógica para enviar el formulario
+      return { nombre, email, mensaje };
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire({
+        title: '¡Gracias por contactarnos!',
+        text: `Nombre: ${result.value.nombre}
+               Email: ${result.value.email}
+               Mensaje: ${result.value.mensaje}`,
+        icon: 'success'
+      });
+    }
+  });
+}
+
 
 // Evento para el cálculo del valor total
 botonCalcular.addEventListener('click', calcularValorTotal);
