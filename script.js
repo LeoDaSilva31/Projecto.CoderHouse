@@ -4,7 +4,6 @@ const coberturasContainer = document.getElementById('coberturas-container');
 const botonCalcular = document.querySelector('.btn');
 const coberturas = ["Guardias", "Dentales", "Medicamentos", "Salud Mental", "Cirugías Plásticas", "Consultorios", "Análisis", "Rayos"];
 
-// Función para crear los divs con listas desplegables
 function crearDivsCoberturas() {
   for (const cobertura of coberturas) {
     const div = document.createElement('div');
@@ -31,7 +30,6 @@ function crearDivsCoberturas() {
   }
 }
 
-// Función para calcular el incremento total
 function calcularIncrementoTotal(precioInicial) {
   let incrementoTotal = 0;
   for (const cobertura of coberturas) {
@@ -58,24 +56,46 @@ function calcularIncrementoTotal(precioInicial) {
 const modal = document.getElementById("modal");
 const cerrar = document.getElementsByClassName("cerrar")[0];
 
-// Función para mostrar el modal
 function mostrarModal() {
   modal.style.display = "block";
 }
 
-// Función para ocultar el modal al hacer clic en la "x"
 cerrar.onclick = function() {
   modal.style.display = "none";
 }
 
-// Función para ocultar el modal al hacer clic fuera del contenido
 window.onclick = function(event) {
   if (event.target == modal) {
     modal.style.display = "none";
   }
 }
 
-// Función para calcular el valor total
+function guardarCoberturasEnLocalStorage() {
+  const coberturasSeleccionadas = {};
+  for (const cobertura of coberturas) {
+    const opcionSeleccionada = document.querySelector(`select[data-cobertura="${cobertura}"]`).value;
+    coberturasSeleccionadas[cobertura] = opcionSeleccionada;
+  }
+  localStorage.setItem('coberturas', JSON.stringify(coberturasSeleccionadas));
+}
+
+function cargarDatosDesdeLocalStorage() {
+  const edad = localStorage.getItem('edad');
+  if (edad) {
+    document.getElementById('edad-input').value = edad;
+  }
+
+  const coberturasSeleccionadas = JSON.parse(localStorage.getItem('coberturas'));
+  if (coberturasSeleccionadas) {
+    for (const cobertura of coberturas) {
+      const select = document.querySelector(`select[data-cobertura="${cobertura}"]`);
+      if (select) {
+        select.value = coberturasSeleccionadas[cobertura];
+      }
+    }
+  }
+}
+
 function calcularValorTotal() {
   const edadInput = document.getElementById('edad-input');
   let edad = parseInt(edadInput.value);
@@ -89,6 +109,12 @@ function calcularValorTotal() {
     });
     return;
   }
+
+  // Almacenar la edad en localStorage
+  localStorage.setItem('edad', edad);
+
+  // Guardar las coberturas en localStorage
+  guardarCoberturasEnLocalStorage();
 
   let precioInicial;
   switch (true) {
@@ -118,7 +144,7 @@ function calcularValorTotal() {
   Swal.fire({
     title: `<div style="text-align: center; font-size: 24px; animation: heartBeat 1s infinite;">El valor de la cobertura seleccionada es: $${valorTotal}</div>`,
     html: `<div style="text-align: justify;">Detalle de coberturas:</div>${detalleCoberturas}`,
-    icon: 'fas fa-heartbeat',
+    icon: 'info',
     confirmButtonText: 'Aceptar',
     showCancelButton: true,
     cancelButtonText: 'Contáctame',
@@ -194,9 +220,11 @@ function mostrarFormularioContacto(detalleCoberturas) {
   });
 }
 
-
 // Evento para el cálculo del valor total
 botonCalcular.addEventListener('click', calcularValorTotal);
 
 // Crear los divs con listas desplegables al cargar la página
 crearDivsCoberturas();
+
+// Cargar datos desde localStorage al cargar la página
+window.addEventListener('load', cargarDatosDesdeLocalStorage);
