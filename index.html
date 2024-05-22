@@ -8,44 +8,44 @@
   <!-- Incluir la biblioteca SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-  
-
 </head>
 <body>
-  <div class="container">
-    <h1>Calculadora del valor de la Cobertura</h1>
-    <form id="edad-form">
-      <div class="form-group">
-        <label for="edad-input">Ingrese su edad (entre 0 y 60):</label>
-        <input type="number" id="edad-input" min="0" max="60" required>
+  <div class="row" id="contenedorGeneral">
+    <div class="col-8" id="contenedorCalculadora">
+      <div class="container">
+        <h1>Calculadora del valor de la Cobertura</h1>
+        <form id="edad-form">
+          <div class="form-group">
+            <label for="edad-input">Ingrese su edad (entre 0 y 60):</label>
+            <input type="number" id="edad-input" min="0" max="60" required>
+          </div>
+          <h2>Seleccione las coberturas deseadas:</h2>
+          <div id="coberturas-container" class="coberturas">
+            <!-- Aquí se agregarán los divs para cada cobertura -->
+          </div>
+          <button type="button" class="btn">Calcular</button>
+        </form>
+        <!--
+        <div id="resultado-container">
+          <h2>El valor de la cobertura seleccionada es:</h2>
+          <p id="resultado-final"></p>
+        </div>
+        -->
       </div>
-      <h2>Seleccione las coberturas deseadas:</h2>
-      <div id="coberturas-container" class="coberturas">
-        <!-- Aquí se agregarán los divs para cada cobertura -->
+      <div id="modal" class="modal">
+        <div class="modal-contenido">
+          <span class="cerrar">&times;</span>
+          <p>Debes ingresar una edad válida entre 0 y 60.</p>
+        </div>
       </div>
-      <button type="button" class="btn">Calcular</button>
-    </form>
-    <!--
-    <div id="resultado-container">
-      <h2>El valor de la cobertura seleccionada es:</h2>
-      <p id="resultado-final"></p>
+      <div id="formularioContacto">
+        <div></div>
+      </div>
     </div>
-    -->
-  </div>
-  <div id="modal" class="modal">
-    <div class="modal-contenido">
-      <span class="cerrar">&times;</span>
-      <p>Debes ingresar una edad válida entre 0 y 60.</p>
+    <div class="col-4" id="contenedorImagen">
+      <img src="vertical.jpg" alt="Imagen descriptiva">
     </div>
   </div>
-  
-
-  <div id="formularioContacto">
-    <div>
-      
-    </div>
-  </div>
-  
   <script src="script.js"></script>
 </body>
 </html>
