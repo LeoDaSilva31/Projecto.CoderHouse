@@ -156,6 +156,12 @@ function calcularValorTotal() {
   });
 }
 
+// Función mostrarFormularioContacto 
+// Inicializa EmailJS con tu clave de servicio (agrega esto al inicio del script)
+emailjs.init('mDrVPewzDYHwf84iL');
+
+// Función mostrarFormularioContacto 
+// Función mostrarFormularioContacto 
 function mostrarFormularioContacto(detalleCoberturas) {
   const coberturasPorDefecto = ['Guardias', 'Dentales', 'Medicamentos', 'Salud Mental', 'Cirugías Plásticas', 'Consultorios', 'Análisis', 'Rayos'];
   let mensaje = 'Me interesa que se comuniquen conmigo a la brevedad, estoy interesado en el servicio de coberturas médicas +Salud, en particular quiero información por el siguiente listado de coberturas:\n\n';
@@ -166,18 +172,18 @@ function mostrarFormularioContacto(detalleCoberturas) {
   }
 
   const formularioHTML = `
-    <form>
+    <form id="contact-form">
       <div class="form-group">
-        <label for="nombre">Nombre:</label>
-        <input type="text" class="form-control" id="nombre" placeholder="Ingresa tu nombre">
+        <label for="from_name">Nombre:</label>
+        <input type="text" class="form-control" id="from_name" name="from_name" placeholder="Ingresa tu nombre">
       </div>
       <div class="form-group">
         <label for="email">Email:</label>
-        <input type="email" class="form-control" id="email" placeholder="Ingresa tu email">
+        <input type="email" class="form-control" id="email" name="email" placeholder="Ingresa tu email">
       </div>
       <div class="form-group">
-        <label for="mensaje">Mensaje:</label>
-        <textarea class="form-control" id="mensaje" rows="12" placeholder="Ingresa tu mensaje">${mensaje}</textarea>
+        <label for="message">Mensaje:</label>
+        <textarea class="form-control" id="message" name="message" rows="12" placeholder="Ingresa tu mensaje">${mensaje}</textarea>
       </div>
     </form>
   `;
@@ -189,36 +195,35 @@ function mostrarFormularioContacto(detalleCoberturas) {
     showCancelButton: true,
     cancelButtonText: 'Cancelar',
     preConfirm: () => {
-      const nombre = document.getElementById('nombre').value;
-      const email = document.getElementById('email').value;
-      const mensaje = document.getElementById('mensaje').value;
-      if (!nombre || !email || !mensaje) {
+      const form = document.getElementById('contact-form');
+      if (!form.from_name.value || !form.email.value || !form.message.value) {
         Swal.showValidationMessage('Por favor, completa todos los campos');
       } else {
-        // Enviar el correo electrónico mediante EmailJS
-        emailjs.send('ID_DE_SERVICIO', 'ID_DE_PLANTILLA', {
-          from_name: nombre,
-          reply_to: email,
-          message: mensaje
-        })
-        .then(() => {
-          Swal.fire({
-            title: '¡Gracias por contactarnos!',
-            text: 'Tu mensaje ha sido enviado correctamente.',
-            icon: 'success'
+        // Enviar el formulario usando EmailJS
+        return emailjs.sendForm('default_service', 'template_vedrbli', form)
+          .then(() => {
+            Swal.fire({
+              title: '¡Mensaje enviado con éxito!',
+              icon: 'success',
+              confirmButtonText: 'Aceptar'
+            });
+          })
+          .catch(error => {
+            Swal.fire({
+              title: 'Error al enviar el mensaje',
+              text: 'Por favor, inténtalo de nuevo.',
+              icon: 'error',
+              confirmButtonText: 'Aceptar'
+            });
+            console.error('Error al enviar el mensaje:', error);
           });
-        }, (error) => {
-          Swal.fire({
-            title: 'Error',
-            text: 'Ocurrió un error al enviar el mensaje. Por favor, inténtalo de nuevo más tarde.',
-            icon: 'error'
-          });
-          console.error('Error al enviar el correo electrónico:', error);
-        });
       }
     }
   });
 }
+
+
+
 
 // Evento para el cálculo del valor total
 botonCalcular.addEventListener('click', calcularValorTotal);
