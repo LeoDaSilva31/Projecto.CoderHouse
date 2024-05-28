@@ -1,9 +1,11 @@
+// Obtener elementos del DOM
 const edadForm = document.getElementById('edad-form');
 const resultadoFinal = document.getElementById('resultado-final');
 const coberturasContainer = document.getElementById('coberturas-container');
 const botonCalcular = document.querySelector('.btn');
 const coberturas = ["Guardias", "Dentales", "Medicamentos", "Salud Mental", "Cirugías Plásticas", "Consultorios", "Análisis", "Rayos"];
 
+// Función para crear los selectores de coberturas
 function crearDivsCoberturas() {
   for (const cobertura of coberturas) {
     const div = document.createElement('div');
@@ -30,6 +32,7 @@ function crearDivsCoberturas() {
   }
 }
 
+// Función para calcular el incremento total
 function calcularIncrementoTotal(precioInicial) {
   let incrementoTotal = 0;
   for (const cobertura of coberturas) {
@@ -56,10 +59,12 @@ function calcularIncrementoTotal(precioInicial) {
 const modal = document.getElementById("modal");
 const cerrar = document.getElementsByClassName("cerrar")[0];
 
+// Función para mostrar el modal
 function mostrarModal() {
   modal.style.display = "block";
 }
 
+// Eventos para cerrar el modal
 cerrar.onclick = function() {
   modal.style.display = "none";
 }
@@ -70,6 +75,7 @@ window.onclick = function(event) {
   }
 }
 
+// Función para guardar las coberturas en el localStorage
 function guardarCoberturasEnLocalStorage() {
   const coberturasSeleccionadas = {};
   for (const cobertura of coberturas) {
@@ -79,6 +85,7 @@ function guardarCoberturasEnLocalStorage() {
   localStorage.setItem('coberturas', JSON.stringify(coberturasSeleccionadas));
 }
 
+// Función para cargar datos desde el localStorage
 function cargarDatosDesdeLocalStorage() {
   const edad = localStorage.getItem('edad');
   if (edad) {
@@ -96,6 +103,7 @@ function cargarDatosDesdeLocalStorage() {
   }
 }
 
+// Función para calcular el valor total de la cobertura
 function calcularValorTotal() {
   const edadInput = document.getElementById('edad-input');
   let edad = parseInt(edadInput.value);
@@ -156,12 +164,10 @@ function calcularValorTotal() {
   });
 }
 
-// Función mostrarFormularioContacto 
-// Inicializa EmailJS con tu clave de servicio (agrega esto al inicio del script)
+// Inicializar EmailJS
 emailjs.init('mDrVPewzDYHwf84iL');
 
-// Función mostrarFormularioContacto 
-// Función mostrarFormularioContacto 
+// Función para mostrar el formulario de contacto
 function mostrarFormularioContacto(detalleCoberturas) {
   const coberturasPorDefecto = ['Guardias', 'Dentales', 'Medicamentos', 'Salud Mental', 'Cirugías Plásticas', 'Consultorios', 'Análisis', 'Rayos'];
   let mensaje = 'Me interesa que se comuniquen conmigo a la brevedad, estoy interesado en el servicio de coberturas médicas +Salud, en particular quiero información por el siguiente listado de coberturas:\n\n';
@@ -204,8 +210,8 @@ function mostrarFormularioContacto(detalleCoberturas) {
           text: "Enviando mensaje...",
           duration: 3000,
           close: true,
-          gravity: "top", // top or bottom
-          position: "right", // left, center or right
+          gravity: "top",
+          position: "right",
           backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
         }).showToast();
 
@@ -231,10 +237,6 @@ function mostrarFormularioContacto(detalleCoberturas) {
     }
   });
 }
-
-
-
-
 
 // Evento para el cálculo del valor total
 botonCalcular.addEventListener('click', calcularValorTotal);
