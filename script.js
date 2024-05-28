@@ -199,6 +199,16 @@ function mostrarFormularioContacto(detalleCoberturas) {
       if (!form.from_name.value || !form.email.value || !form.message.value) {
         Swal.showValidationMessage('Por favor, completa todos los campos');
       } else {
+        // Mostrar notificación de Toastify cuando se está enviando el mensaje
+        Toastify({
+          text: "Enviando mensaje...",
+          duration: 3000,
+          close: true,
+          gravity: "top", // top or bottom
+          position: "right", // left, center or right
+          backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+        }).showToast();
+
         // Enviar el formulario usando EmailJS
         return emailjs.sendForm('default_service', 'template_vedrbli', form)
           .then(() => {
@@ -221,6 +231,7 @@ function mostrarFormularioContacto(detalleCoberturas) {
     }
   });
 }
+
 
 
 
