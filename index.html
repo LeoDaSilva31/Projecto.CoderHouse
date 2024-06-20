@@ -5,11 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora de Cobertura</title>
   <link rel="stylesheet" href="styles.css">
-  <!-- Incluir la biblioteca SweetAlert2 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <!-- Incluir EmailJS -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-  <!-- Incluir Toastify -->
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 </head>
@@ -24,9 +23,7 @@
             <input type="number" id="edad-input" min="0" max="60" required>
           </div>
           <h2>Seleccione las coberturas deseadas:</h2>
-          <div id="coberturas-container" class="coberturas">
-            <!-- Aquí se agregarán los divs para cada cobertura -->
-          </div>
+          <div id="coberturas-container" class="coberturas"></div>
           <button type="button" class="btn">Calcular</button>
         </form>
       </div>
@@ -40,11 +37,25 @@
         <div></div>
       </div>
     </div>
-    <div class="col-4" id="contenedorImagen">
-      <img src="vertical.jpg" alt="Imagen descriptiva">
+    <div class="col-4" id="horaYGeolocalizacion">
+      <div id="geoData">
+        <i class="fas fa-map-marker-alt location-icon"></i>
+        <span>Detectando tu ubicación...</span>
+      </div>
+      <div id="worldClocks">
+        <h3>Horas de las principales ciudades del mundo</h3>
+        <ul>
+          <li><i class="fas fa-clock clock-icon"></i><span id="new-york-time">Nueva York: </span></li>
+          <li><i class="fas fa-clock clock-icon"></i><span id="london-time">Londres: </span></li>
+          <li><i class="fas fa-clock clock-icon"></i><span id="tokyo-time">Tokio: </span></li>
+          <li><i class="fas fa-clock clock-icon"></i><span id="sydney-time">Sídney: </span></li>
+        </ul>
+      </div>
     </div>
   </div>
   <script src="script.js"></script>
 </body>
 </html>
+
+
 
