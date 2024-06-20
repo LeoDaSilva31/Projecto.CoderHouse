@@ -1,47 +1,9 @@
 document.addEventListener('DOMContentLoaded', (event) => {
-  // Función para obtener datos del clima
-  function fetchWeatherData() {
-    const apiKey = '091ba4c21dacaba171c957cc66dbcc93'; // Nueva clave API
-    const lat = -34.61315; // Latitud de Buenos Aires
-    const lon = -58.37723; // Longitud de Buenos Aires
-    const apiUrl = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts&appid=${apiKey}&units=metric&lang=es`;
 
-    fetch(apiUrl)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok ' + response.statusText);
-        }
-        return response.json();
-      })
-      .then(data => {
-        displayWeatherData(data);
-      })
-      .catch(error => {
-        console.error('Error fetching weather data:', error);
-        const weatherDataContainer = document.getElementById('weatherData');
-        weatherDataContainer.innerHTML = `<p>Error fetching weather data: ${error.message}</p>`;
-      });
-  }
-
-  // Función para mostrar los datos del clima
-  function displayWeatherData(data) {
-    const weatherDataContainer = document.getElementById('weatherData');
-    weatherDataContainer.innerHTML = `
-      <h3>Clima en Buenos Aires</h3>
-      <p>Temperatura actual: ${data.current.temp} °C</p>
-      <p>Humedad: ${data.current.humidity} %</p>
-      <p>Descripción: ${data.current.weather[0].description}</p>
-      <p>Temperatura máxima: ${data.daily[0].temp.max} °C</p>
-      <p>Temperatura mínima: ${data.daily[0].temp.min} °C</p>
-    `;
-  }
-
-  // Llamar a la función para obtener datos del clima cuando la página cargue
-  fetchWeatherData();
-
-  // Funciones de geolocalización y horas
+  // Clave API de OpenCage
   const openCageApiKey = 'e0b02918bc534c0e8f2bee17efa9b7ba';
 
+  // Función para obtener la geolocalización
   function getGeolocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPosition, showError);
@@ -50,12 +12,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
   }
 
+  // Función para mostrar la posición
   function showPosition(position) {
     const lat = position.coords.latitude;
     const lon = position.coords.longitude;
 
+    // Usamos fetch para obtener la ubicación a partir de las coordenadas
     fetch(`https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lon}&key=${openCageApiKey}`)
-      .then(response => response.json())
+      .then(response => response.json()) // Convertimos la respuesta a JSON
       .then(data => {
         const components = data.results[0].components;
         const locality = components.suburb || components.city || components.town || components.village || components.hamlet;
@@ -74,6 +38,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
       });
   }
 
+  // Función para manejar errores de geolocalización
   function showError(error) {
     let errorMessage = '';
     switch(error.code) {
@@ -93,6 +58,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     document.getElementById('geoData').innerHTML = errorMessage;
   }
 
+  // Función para mostrar las horas de las principales ciudades del mundo
   function showWorldClocks() {
     const cities = {
       'new-york-time': 'America/New_York',
@@ -108,7 +74,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
   }
 
+  // Actualizar los relojes cada segundo
   setInterval(showWorldClocks, 1000);
+
+  // Obtener la geolocalización al cargar la página
   getGeolocation();
 
   // Resto del código existente...
@@ -118,6 +87,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
   const botonCalcular = document.querySelector('.btn');
   const coberturas = ["Guardias", "Dentales", "Medicamentos", "Salud Mental", "Cirugías Plásticas", "Consultorios", "Análisis", "Rayos"];
 
+  // Función para crear los selectores de coberturas
   function crearDivsCoberturas() {
     for (const cobertura of coberturas) {
       const div = document.createElement('div');
@@ -144,6 +114,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
   }
 
+  // Función para calcular el incremento total
   function calcularIncrementoTotal(precioInicial) {
     let incrementoTotal = 0;
     for (const cobertura of coberturas) {
@@ -166,13 +137,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
     return incrementoTotal;
   }
 
+  // Obtener elementos del modal
   const modal = document.getElementById("modal");
   const cerrar = document.getElementsByClassName("cerrar")[0];
 
+  // Función para mostrar el modal
   function mostrarModal() {
     modal.style.display = "block";
   }
 
+  // Eventos para cerrar el modal
   cerrar.onclick = function() {
     modal.style.display = "none";
   }
@@ -183,6 +157,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
   }
 
+  // Función para guardar las coberturas en el localStorage
   function guardarCoberturasEnLocalStorage() {
     const coberturasSeleccionadas = {};
     for (const cobertura of coberturas) {
@@ -192,6 +167,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     localStorage.setItem('coberturas', JSON.stringify(coberturasSeleccionadas));
   }
 
+  // Función para cargar datos desde el localStorage
   function cargarDatosDesdeLocalStorage() {
     const edad = localStorage.getItem('edad');
     if (edad) {
@@ -209,6 +185,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     }
   }
 
+  // Función para calcular el valor total de la cobertura
   function calcularValorTotal() {
     const edadInput = document.getElementById('edad-input');
     let edad = parseInt(edadInput.value);
@@ -223,7 +200,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
       return;
     }
 
+    // Almacenar la edad en localStorage
     localStorage.setItem('edad', edad);
+
+    // Guardar las coberturas en localStorage
     guardarCoberturasEnLocalStorage();
 
     let precioInicial;
@@ -266,8 +246,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
   }
 
+  // Inicializar EmailJS
   emailjs.init('mDrVPewzDYHwf84iL');
 
+  // Función para mostrar el formulario de contacto
   function mostrarFormularioContacto(detalleCoberturas) {
     const coberturasPorDefecto = ['Guardias', 'Dentales', 'Medicamentos', 'Salud Mental', 'Cirugías Plásticas', 'Consultorios', 'Análisis', 'Rayos'];
     let mensaje = 'Me interesa que se comuniquen conmigo a la brevedad, estoy interesado en el servicio de coberturas médicas +Salud, en particular quiero información por el siguiente listado de coberturas:\n\n';
@@ -336,10 +318,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
   }
 
+  // Evento para el cálculo del valor total
   botonCalcular.addEventListener('click', calcularValorTotal);
+
+  // Crear los divs con listas desplegables al cargar la página
   crearDivsCoberturas();
+
+  // Cargar datos desde localStorage al cargar la página
   window.addEventListener('load', cargarDatosDesdeLocalStorage);
 });
+
 
 
 
